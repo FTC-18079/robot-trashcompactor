@@ -1,1 +1,1 @@
-## This is our team's robot template. Use this when creating a new robot project.
+## Our beloved outreach bot <3.
