@@ -8,7 +8,6 @@ import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.RobotMap;
 
 public class Intake extends SubsystemBase {
@@ -39,13 +38,13 @@ public class Intake extends SubsystemBase {
 
     public void in() {
         intake.set(1);
-        conveyor.set(IntakeConstants.toRevPerSec(0.75));
+        conveyor.set(IntakeConstants.toTicksPerSec(IntakeConstants.CONVEYOR_RPM));
         telemetry.addData("Conveyor velocity", conveyor.getCorrectedVelocity());
     }
 
     public void out() {
         intake.set(-1);
-        conveyor.set(IntakeConstants.toRevPerSec(-0.75));
+        conveyor.set(IntakeConstants.toTicksPerSec(-IntakeConstants.CONVEYOR_RPM));
         telemetry.addData("Conveyor velocity", conveyor.getCorrectedVelocity());
     }
 

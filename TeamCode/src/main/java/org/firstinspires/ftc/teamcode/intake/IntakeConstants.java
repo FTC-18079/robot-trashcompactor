@@ -12,10 +12,11 @@ public class IntakeConstants {
     public static int DEPLOY_MAX_ANGLE = 180;
     public static int DEPLOY_DOWN_ANGLE = 180;
     public static int DEPLOY_UP_ANGLE = 105;
+    public static double CONVEYOR_RPM = 40.0;
 
     public static final int CONVEYOR_TICKS = 288;
 
-    public static double toRevPerSec(double ticksPerSec) {
-        return ticksPerSec / CONVEYOR_TICKS;
+    public static double toTicksPerSec(double rpm) {
+        return rpm / 60 * (double) CONVEYOR_TICKS;
     }
 }

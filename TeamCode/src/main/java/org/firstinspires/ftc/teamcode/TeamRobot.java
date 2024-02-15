@@ -12,6 +12,8 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.chassis.Chassis;
 import org.firstinspires.ftc.teamcode.chassis.commands.TeleOpDriveCommand;
 import org.firstinspires.ftc.teamcode.intake.Intake;
+import org.firstinspires.ftc.teamcode.shooter.Shooter;
+import org.firstinspires.ftc.teamcode.shooter.commands.ShootCommand;
 
 public class TeamRobot extends Robot {
     HardwareMap hardwareMap;
@@ -22,9 +24,9 @@ public class TeamRobot extends Robot {
     // Subsystems
     Chassis chassis;
     Intake intake;
+    Shooter shooter;
 
     // OpMode type enumerator
-    // TODO: Add more autos as needed
     public enum OpModeType {
         TELEOP, AUTO
     }
@@ -37,9 +39,9 @@ public class TeamRobot extends Robot {
         this.telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
         // Init Subsystems
-        // TODO: Add your subsystem instances here
         chassis = new Chassis(hardwareMap, this.telemetry);
         intake = new Intake(hardwareMap, this.telemetry);
+        shooter = new Shooter(hardwareMap, this.telemetry);
 
         // Set up OpMode
         setupOpMode(type);
@@ -65,6 +67,9 @@ public class TeamRobot extends Robot {
         chassis.setDefaultCommand(
                 new TeleOpDriveCommand(chassis)
         );
+
+        manipController.getGamepadButton(GamepadKeys.Button.A)
+                .whenPressed(new ShootCommand(shooter));
 
         manipController.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
                 .whenPressed(intake::in);

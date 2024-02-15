@@ -10,5 +10,8 @@ public class RobotMap {
     public static final String SERVO_INTAKE = "intake";
     public static final String SERVO_DEPLOY = "deploy";
 
+    public static final String MOTOR_SHOOTER = "shooter";
+    public static final String SERVO_FLICK = "flick";
+
     public static final String GYRO = "imu";
 }
