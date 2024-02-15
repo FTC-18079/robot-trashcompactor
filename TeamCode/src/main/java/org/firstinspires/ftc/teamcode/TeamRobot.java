@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.chassis.Chassis;
 import org.firstinspires.ftc.teamcode.chassis.commands.TeleOpDriveCommand;
+import org.firstinspires.ftc.teamcode.intake.Intake;
 
 public class TeamRobot extends Robot {
     HardwareMap hardwareMap;
@@ -19,6 +20,7 @@ public class TeamRobot extends Robot {
 
     // Subsystems
     Chassis chassis;
+    Intake intake;
 
     // Commands
     TeleOpDriveCommand driveCommand;
@@ -40,6 +42,7 @@ public class TeamRobot extends Robot {
         // Init Subsystems
         // TODO: Add your subsystem instances here
         chassis = new Chassis(hardwareMap, telemetry);
+        intake = new Intake(hardwareMap, telemetry);
 
         // Set up OpMode
         setupOpMode(type);
