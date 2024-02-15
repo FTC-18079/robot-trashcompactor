@@ -31,16 +31,15 @@ public class TeamRobot extends Robot {
 
     public TeamRobot(OpModeType type, HardwareMap hardwareMap, Telemetry telemetry, Gamepad gamePad1, Gamepad gamePad2) {
         this.hardwareMap = hardwareMap;
-        this.telemetry = telemetry;
         this.driveController = new GamepadEx(gamePad1);
         this.manipController = new GamepadEx(gamePad2);
 
-        this.telemetry = new MultipleTelemetry(this.telemetry, FtcDashboard.getInstance().getTelemetry());
+        this.telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
         // Init Subsystems
         // TODO: Add your subsystem instances here
-        chassis = new Chassis(hardwareMap, telemetry);
-        intake = new Intake(hardwareMap, telemetry);
+        chassis = new Chassis(hardwareMap, this.telemetry);
+        intake = new Intake(hardwareMap, this.telemetry);
 
         // Set up OpMode
         setupOpMode(type);

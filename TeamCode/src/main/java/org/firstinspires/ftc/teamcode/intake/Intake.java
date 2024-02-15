@@ -40,11 +40,13 @@ public class Intake extends SubsystemBase {
     public void in() {
         intake.set(1);
         conveyor.set(IntakeConstants.toRevPerSec(0.75));
+        telemetry.addData("Conveyor velocity", conveyor.getCorrectedVelocity());
     }
 
     public void out() {
         intake.set(-1);
         conveyor.set(IntakeConstants.toRevPerSec(-0.75));
+        telemetry.addData("Conveyor velocity", conveyor.getCorrectedVelocity());
     }
 
     public void deploy() {
