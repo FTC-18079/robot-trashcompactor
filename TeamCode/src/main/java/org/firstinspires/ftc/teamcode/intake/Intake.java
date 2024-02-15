@@ -24,7 +24,7 @@ public class Intake extends SubsystemBase {
         this.telemetry = telemetry;
 
         intake = new CRServo(hardwareMap, RobotMap.SERVO_INTAKE);
-        deploy = new SimpleServo(hardwareMap, RobotMap.SERVO_DEPLOY, 0, 180, AngleUnit.DEGREES);
+        deploy = new SimpleServo(hardwareMap, RobotMap.SERVO_DEPLOY, IntakeConstants.DEPLOY_MIN_ANGLE, IntakeConstants.DEPLOY_MAX_ANGLE);
         conveyor = new MotorEx(hardwareMap, RobotMap.MOTOR_CONVEYOR);
 
         setupConveyor();
@@ -39,17 +39,19 @@ public class Intake extends SubsystemBase {
 
     public void in() {
         intake.set(1);
+        conveyor.set(IntakeConstants.toRevPerSec(0.75));
     }
 
     public void out() {
         intake.set(-1);
+        conveyor.set(IntakeConstants.toRevPerSec(-0.75));
     }
 
     public void deploy() {
-
+        deploy.turnToAngle(IntakeConstants.DEPLOY_DOWN_ANGLE);
     }
 
     public void retract() {
-
+        deploy.turnToAngle(IntakeConstants.DEPLOY_UP_ANGLE);
     }
 }
