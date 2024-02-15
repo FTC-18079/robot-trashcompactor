@@ -4,12 +4,14 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.arcrobotics.ftclib.command.Robot;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
+import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.chassis.Chassis;
 import org.firstinspires.ftc.teamcode.chassis.commands.TeleOpDriveCommand;
+import org.firstinspires.ftc.teamcode.intake.Intake;
 
 public class TeamRobot extends Robot {
     HardwareMap hardwareMap;
@@ -19,9 +21,7 @@ public class TeamRobot extends Robot {
 
     // Subsystems
     Chassis chassis;
-
-    // Commands
-    TeleOpDriveCommand driveCommand;
+    Intake intake;
 
     // OpMode type enumerator
     // TODO: Add more autos as needed
@@ -31,15 +31,15 @@ public class TeamRobot extends Robot {
 
     public TeamRobot(OpModeType type, HardwareMap hardwareMap, Telemetry telemetry, Gamepad gamePad1, Gamepad gamePad2) {
         this.hardwareMap = hardwareMap;
-        this.telemetry = telemetry;
         this.driveController = new GamepadEx(gamePad1);
         this.manipController = new GamepadEx(gamePad2);
 
-        this.telemetry = new MultipleTelemetry(this.telemetry, FtcDashboard.getInstance().getTelemetry());
+        this.telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
         // Init Subsystems
         // TODO: Add your subsystem instances here
-        chassis = new Chassis(hardwareMap, telemetry);
+        chassis = new Chassis(hardwareMap, this.telemetry);
+        intake = new Intake(hardwareMap, this.telemetry);
 
         // Set up OpMode
         setupOpMode(type);
@@ -65,6 +65,15 @@ public class TeamRobot extends Robot {
         chassis.setDefaultCommand(
                 new TeleOpDriveCommand(chassis)
         );
+
+        manipController.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
+                .whenPressed(intake::in);
+        manipController.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
+                .whenPressed(intake::out);
+        manipController.getGamepadButton(GamepadKeys.Button.DPAD_DOWN)
+                .whenPressed(intake::retract);
+        manipController.getGamepadButton(GamepadKeys.Button.DPAD_DOWN)
+                .whenPressed(intake::deploy);
     }
 
     // Initialize Autonomous scheduler
