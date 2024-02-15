@@ -49,4 +49,12 @@ public class Shooter extends SubsystemBase {
     public void stop() {
         shooter.set(0);
     }
+
+    public boolean reachedTargetVel() {
+        return getShooterVelocity() == ShooterConstants.SHOOTER_RPM;
+    }
+
+    public double getShooterVelocity() {
+        return shooter.getCorrectedVelocity();
+    }
 }
