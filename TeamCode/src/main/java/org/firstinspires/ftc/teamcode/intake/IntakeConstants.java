@@ -8,15 +8,16 @@ public class IntakeConstants {
     public static double kI = 0.0;
     public static double kD = 0.0;
 
-    public static int DEPLOY_MIN_ANGLE = 0;
-    public static int DEPLOY_MAX_ANGLE = 180;
-    public static int DEPLOY_DOWN_ANGLE = 180;
-    public static int DEPLOY_UP_ANGLE = 105;
+    public static double kS = 0;
+    public static double kV = 1;
+    public static double kA = 0;
+    public static int DEPLOY_DOWN_ANGLE = 0;
+    public static int DEPLOY_UP_ANGLE = 1;
     public static double CONVEYOR_RPM = 40.0;
 
     public static final int CONVEYOR_TICKS = 288;
 
     public static double toTicksPerSec(double rpm) {
-        return rpm / 60 * (double) CONVEYOR_TICKS;
+        return (rpm / 60) * (double) CONVEYOR_TICKS;
     }
 }

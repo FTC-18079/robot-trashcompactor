@@ -72,10 +72,13 @@ public class TeamRobot extends Robot {
                 .whenPressed(new ShootCommand(shooter));
 
         manipController.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
-                .whenPressed(intake::in);
-        manipController.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
-                .whenPressed(intake::out);
-        manipController.getGamepadButton(GamepadKeys.Button.DPAD_DOWN)
+                .whileHeld(intake::in)
+                .whenReleased(intake::stop);
+//        manipController.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
+//                .whileHeld(intake::out)
+//                .whenReleased(intake::stop);
+
+        manipController.getGamepadButton(GamepadKeys.Button.DPAD_UP)
                 .whenPressed(intake::retract);
         manipController.getGamepadButton(GamepadKeys.Button.DPAD_DOWN)
                 .whenPressed(intake::deploy);

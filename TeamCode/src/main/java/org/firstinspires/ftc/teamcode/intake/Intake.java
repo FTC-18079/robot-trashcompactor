@@ -1,21 +1,22 @@
 package org.firstinspires.ftc.teamcode.intake;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
-import com.arcrobotics.ftclib.hardware.ServoEx;
-import com.arcrobotics.ftclib.hardware.SimpleServo;
 import com.arcrobotics.ftclib.hardware.motors.CRServo;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.RobotMap;
+
+import static org.firstinspires.ftc.teamcode.intake.IntakeConstants.*;
 
 public class Intake extends SubsystemBase {
     HardwareMap hardwareMap;
     Telemetry telemetry;
 
     private final CRServo intake;
-    private final ServoEx deploy;
+    private final Servo deploy;
     private final MotorEx conveyor;
 
     public Intake(HardwareMap hardwareMap, Telemetry telemetry) {
@@ -23,36 +24,46 @@ public class Intake extends SubsystemBase {
         this.telemetry = telemetry;
 
         intake = new CRServo(hardwareMap, RobotMap.SERVO_INTAKE);
-        deploy = new SimpleServo(hardwareMap, RobotMap.SERVO_DEPLOY, IntakeConstants.DEPLOY_MIN_ANGLE, IntakeConstants.DEPLOY_MAX_ANGLE);
+        deploy = hardwareMap.get(Servo.class, RobotMap.SERVO_DEPLOY);
         conveyor = new MotorEx(hardwareMap, RobotMap.MOTOR_CONVEYOR);
 
         setupConveyor();
     }
 
     public void setupConveyor() {
-        conveyor.setVeloCoefficients(IntakeConstants.kP, IntakeConstants.kI, IntakeConstants.kD);
+        conveyor.stopAndResetEncoder();
+        conveyor.setVeloCoefficients(kP, kI, kD);
+        conveyor.setFeedforwardCoefficients(kS, kV, kA);
         conveyor.setRunMode(MotorEx.RunMode.VelocityControl);
         conveyor.setZeroPowerBehavior(MotorEx.ZeroPowerBehavior.BRAKE);
-        conveyor.resetEncoder();
     }
 
     public void in() {
-        intake.set(1);
-        conveyor.set(IntakeConstants.toTicksPerSec(IntakeConstants.CONVEYOR_RPM));
+        intake.set(-1);
+        conveyor.setVelocity(toTicksPerSec(-CONVEYOR_RPM));
         telemetry.addData("Conveyor velocity", conveyor.getCorrectedVelocity());
+        telemetry.update();
     }
 
     public void out() {
-        intake.set(-1);
-        conveyor.set(IntakeConstants.toTicksPerSec(-IntakeConstants.CONVEYOR_RPM));
+        intake.set(1);
+        conveyor.setVelocity(toTicksPerSec(CONVEYOR_RPM));
         telemetry.addData("Conveyor velocity", conveyor.getCorrectedVelocity());
+        telemetry.update();
+    }
+
+    public void stop() {
+        intake.stop();
+        conveyor.stopMotor();
+        telemetry.addData("Conveyor velocity", conveyor.getCorrectedVelocity());
+        telemetry.update();
     }
 
     public void deploy() {
-        deploy.turnToAngle(IntakeConstants.DEPLOY_DOWN_ANGLE);
+        deploy.setPosition(DEPLOY_DOWN_ANGLE);
     }
 
     public void retract() {
-        deploy.turnToAngle(IntakeConstants.DEPLOY_UP_ANGLE);
+        deploy.setPosition(DEPLOY_UP_ANGLE);
     }
 }
