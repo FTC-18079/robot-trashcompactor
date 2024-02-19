@@ -6,7 +6,8 @@ public class RobotMap {
     public static final String MOTOR_BL = "backLeft";
     public static final String MOTOR_BR = "backRight";
 
-    public static final String MOTOR_CONVEYOR = "conveyor";
+    public static final String MOTOR_UPPER_CONVEYOR = "conveyorUpper";
+    public static final String MOTOR_LOWER_CONVEYOR = "conveyorLower";
     public static final String SERVO_INTAKE = "intake";
     public static final String SERVO_DEPLOY = "deploy";
 

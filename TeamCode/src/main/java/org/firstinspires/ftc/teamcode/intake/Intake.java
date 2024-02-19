@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.intake;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.hardware.motors.CRServo;
+import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -17,7 +18,8 @@ public class Intake extends SubsystemBase {
 
     private final CRServo intake;
     private final Servo deploy;
-    private final MotorEx conveyor;
+    private final MotorEx upperConveyor;
+    private final MotorEx lowerConveyor;
 
     public Intake(HardwareMap hardwareMap, Telemetry telemetry) {
         this.hardwareMap = hardwareMap;
@@ -25,37 +27,45 @@ public class Intake extends SubsystemBase {
 
         intake = new CRServo(hardwareMap, RobotMap.SERVO_INTAKE);
         deploy = hardwareMap.get(Servo.class, RobotMap.SERVO_DEPLOY);
-        conveyor = new MotorEx(hardwareMap, RobotMap.MOTOR_CONVEYOR);
+        upperConveyor = new MotorEx(hardwareMap, RobotMap.MOTOR_UPPER_CONVEYOR);
+        lowerConveyor = new MotorEx(hardwareMap, RobotMap.MOTOR_LOWER_CONVEYOR);
 
-        setupConveyor();
+        setupUpperConveyor();
+        setUpLowerConveyor();
     }
 
-    public void setupConveyor() {
-        conveyor.stopAndResetEncoder();
-        conveyor.setVeloCoefficients(kP, kI, kD);
-        conveyor.setFeedforwardCoefficients(kS, kV, kA);
-        conveyor.setRunMode(MotorEx.RunMode.VelocityControl);
-        conveyor.setZeroPowerBehavior(MotorEx.ZeroPowerBehavior.BRAKE);
+    public void setupUpperConveyor() {
+        upperConveyor.stopAndResetEncoder();
+        upperConveyor.setVeloCoefficients(kP, kI, kD);
+        upperConveyor.setFeedforwardCoefficients(kS, kV, kA);
+        upperConveyor.setRunMode(MotorEx.RunMode.VelocityControl);
+        upperConveyor.setZeroPowerBehavior(MotorEx.ZeroPowerBehavior.BRAKE);
+    }
+
+    public void setUpLowerConveyor() {
+        lowerConveyor.stopAndResetEncoder();
+        lowerConveyor.setRunMode(Motor.RunMode.VelocityControl);
+        upperConveyor.setZeroPowerBehavior(MotorEx.ZeroPowerBehavior.BRAKE);
     }
 
     public void in() {
         intake.set(-1);
-        conveyor.setVelocity(toTicksPerSec(-CONVEYOR_RPM));
-        telemetry.addData("Conveyor velocity", conveyor.getCorrectedVelocity());
+        upperConveyor.setVelocity(toTicksPerSec(-CONVEYOR_RPM));
+        telemetry.addData("Conveyor velocity", upperConveyor.getCorrectedVelocity());
         telemetry.update();
     }
 
     public void out() {
         intake.set(1);
-        conveyor.setVelocity(toTicksPerSec(CONVEYOR_RPM));
-        telemetry.addData("Conveyor velocity", conveyor.getCorrectedVelocity());
+        upperConveyor.setVelocity(toTicksPerSec(CONVEYOR_RPM));
+        telemetry.addData("Conveyor velocity", upperConveyor.getCorrectedVelocity());
         telemetry.update();
     }
 
     public void stop() {
         intake.stop();
-        conveyor.stopMotor();
-        telemetry.addData("Conveyor velocity", conveyor.getCorrectedVelocity());
+        upperConveyor.stopMotor();
+        telemetry.addData("Conveyor velocity", upperConveyor.getCorrectedVelocity());
         telemetry.update();
     }
 
