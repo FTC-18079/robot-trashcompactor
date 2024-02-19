@@ -36,36 +36,47 @@ public class Intake extends SubsystemBase {
 
     public void setupUpperConveyor() {
         upperConveyor.stopAndResetEncoder();
-        upperConveyor.setVeloCoefficients(kP, kI, kD);
-        upperConveyor.setFeedforwardCoefficients(kS, kV, kA);
+        upperConveyor.setVeloCoefficients(kP_UPPER, kI_UPPER, kD_UPPER);
+        upperConveyor.setFeedforwardCoefficients(kS_UPPER, kV_UPPER, kA_UPPER);
         upperConveyor.setRunMode(MotorEx.RunMode.VelocityControl);
         upperConveyor.setZeroPowerBehavior(MotorEx.ZeroPowerBehavior.BRAKE);
     }
 
     public void setUpLowerConveyor() {
         lowerConveyor.stopAndResetEncoder();
+        lowerConveyor.setVeloCoefficients(kP_LOWER, kI_LOWER, kD_LOWER);
+        lowerConveyor.setFeedforwardCoefficients(kS_LOWER, kV_LOWER, kA_LOWER);
         lowerConveyor.setRunMode(Motor.RunMode.VelocityControl);
-        upperConveyor.setZeroPowerBehavior(MotorEx.ZeroPowerBehavior.BRAKE);
+        lowerConveyor.setZeroPowerBehavior(MotorEx.ZeroPowerBehavior.BRAKE);
     }
 
     public void in() {
         intake.set(-1);
         upperConveyor.setVelocity(toTicksPerSec(-CONVEYOR_RPM));
-        telemetry.addData("Conveyor velocity", upperConveyor.getCorrectedVelocity());
+        lowerConveyor.setVelocity(toTicksPerSec(-CONVEYOR_RPM) / LOWER_GEAR_RATIO);
+
+        telemetry.addData("Upper Conveyor Velocity", upperConveyor.getCorrectedVelocity());
+        telemetry.addData("Lower Conveyor Velocity", lowerConveyor.getCorrectedVelocity());
         telemetry.update();
     }
 
     public void out() {
         intake.set(1);
         upperConveyor.setVelocity(toTicksPerSec(CONVEYOR_RPM));
-        telemetry.addData("Conveyor velocity", upperConveyor.getCorrectedVelocity());
+        lowerConveyor.setVelocity(toTicksPerSec(CONVEYOR_RPM) / LOWER_GEAR_RATIO);
+
+        telemetry.addData("Upper Conveyor Velocity", upperConveyor.getCorrectedVelocity());
+        telemetry.addData("Lower Conveyor Velocity", lowerConveyor.getCorrectedVelocity());
         telemetry.update();
     }
 
     public void stop() {
         intake.stop();
         upperConveyor.stopMotor();
-        telemetry.addData("Conveyor velocity", upperConveyor.getCorrectedVelocity());
+        lowerConveyor.stopMotor();
+
+        telemetry.addData("Upper Conveyor Velocity", upperConveyor.getCorrectedVelocity());
+        telemetry.addData("Lower Conveyor Velocity", lowerConveyor.getCorrectedVelocity());
         telemetry.update();
     }
 

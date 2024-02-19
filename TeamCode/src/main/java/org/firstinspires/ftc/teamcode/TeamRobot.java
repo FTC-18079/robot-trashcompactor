@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.arcrobotics.ftclib.command.Robot;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
@@ -20,6 +21,7 @@ public class TeamRobot extends Robot {
     Telemetry telemetry;
     GamepadEx driveController;
     GamepadEx manipController;
+    Pose2d initialPose;
 
     // Subsystems
     Chassis chassis;
@@ -31,12 +33,15 @@ public class TeamRobot extends Robot {
         TELEOP, AUTO
     }
 
-    public TeamRobot(OpModeType type, HardwareMap hardwareMap, Telemetry telemetry, Gamepad gamePad1, Gamepad gamePad2) {
+    public TeamRobot(OpModeType type, HardwareMap hardwareMap, Telemetry telemetry, Gamepad gamePad1, Gamepad gamePad2, Pose2d initialPose) {
         this.hardwareMap = hardwareMap;
         this.driveController = new GamepadEx(gamePad1);
         this.manipController = new GamepadEx(gamePad2);
+        this.initialPose = initialPose;
 
         this.telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
+        this.telemetry.addData("Status", "Initializing");
+        this.telemetry.update();
 
         // Init Subsystems
         chassis = new Chassis(hardwareMap, this.telemetry);
@@ -45,6 +50,8 @@ public class TeamRobot extends Robot {
 
         // Set up OpMode
         setupOpMode(type);
+        this.telemetry.addData("Status", "Initialized");
+        this.telemetry.update();
     }
 
     // Determine OpMode to run
@@ -59,25 +66,26 @@ public class TeamRobot extends Robot {
         }
     }
 
-    // TODO: Add more autos as needed
-
     // Initialize TeleOp scheduler
     private void initTele() {
-        // TODO: Add default commands, button bindings, and triggers
+        // Chassis: Driver left & right joysticks
         chassis.setDefaultCommand(
                 new TeleOpDriveCommand(chassis)
         );
 
+        // Shoot: Manip A button
         manipController.getGamepadButton(GamepadKeys.Button.A)
                 .whenPressed(new ShootCommand(shooter));
 
+        // Intake: Manip left & right bumpers
         manipController.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
-                .whileHeld(intake::in)
+                .whenPressed(intake::in)
                 .whenReleased(intake::stop);
-//        manipController.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
-//                .whileHeld(intake::out)
-//                .whenReleased(intake::stop);
+        manipController.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
+                .whenPressed(intake::out)
+                .whenReleased(intake::stop);
 
+        // Deploy: Manip up & down dpad
         manipController.getGamepadButton(GamepadKeys.Button.DPAD_UP)
                 .whenPressed(intake::retract);
         manipController.getGamepadButton(GamepadKeys.Button.DPAD_DOWN)
