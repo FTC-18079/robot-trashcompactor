@@ -19,6 +19,7 @@ public class Intake extends SubsystemBase {
     Telemetry telemetry;
 
     private final CRServo intake;
+    private final CRServo helper;
     private final Servo deploy;
     private final MotorEx upperConveyor;
     private final MotorEx lowerConveyor;
@@ -28,6 +29,7 @@ public class Intake extends SubsystemBase {
         this.telemetry = telemetry;
 
         intake = new CRServo(hardwareMap, RobotMap.SERVO_INTAKE);
+        helper = new CRServo(hardwareMap, RobotMap.SERVO_HELPER);
         deploy = hardwareMap.get(Servo.class, RobotMap.SERVO_DEPLOY);
         upperConveyor = new MotorEx(hardwareMap, RobotMap.MOTOR_UPPER_CONVEYOR);
         lowerConveyor = new MotorEx(hardwareMap, RobotMap.MOTOR_LOWER_CONVEYOR);
@@ -56,18 +58,21 @@ public class Intake extends SubsystemBase {
 
     public void in() {
         intake.set(-1);
+        helper.set(-1);
         upperConveyor.setVelocity(toTicksPerSec(-CONVEYOR_RPM));
         lowerConveyor.setVelocity(toTicksPerSec(-CONVEYOR_RPM / LOWER_GEAR_RATIO));
     }
 
     public void out() {
         intake.set(1);
+        helper.set(1);
         upperConveyor.setVelocity(toTicksPerSec(CONVEYOR_RPM));
         lowerConveyor.setVelocity(toTicksPerSec(CONVEYOR_RPM / LOWER_GEAR_RATIO));
     }
 
     public void stop() {
         intake.stop();
+        helper.stop();
         upperConveyor.stopMotor();
         lowerConveyor.stopMotor();
     }
