@@ -13,9 +13,9 @@ public class IntakeConstants {
     public static double kA_UPPER = 0;
 
     // Lower conveyor velocity constants
-    public static double kP_LOWER = 1.0;
-    public static double kI_LOWER = 0.0;
-    public static double kD_LOWER = 0.0;
+    public static double kP_LOWER = 0.52;
+    public static double kI_LOWER = 0.3;
+    public static double kD_LOWER = 0.003;
     public static double kS_LOWER = 0;
     public static double kV_LOWER = 1;
     public static double kA_LOWER = 0;
