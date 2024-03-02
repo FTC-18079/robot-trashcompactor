@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.Robot;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
@@ -90,10 +91,19 @@ public class TeamRobot extends Robot {
                 .whenPressed(intake::retract);
         manipController.getGamepadButton(GamepadKeys.Button.DPAD_DOWN)
                 .whenPressed(intake::deploy);
+
+        // Temp Debug:
+        manipController.getGamepadButton(GamepadKeys.Button.Y)
+                .whenPressed(intake::setupUpperConveyor)
+                .whenPressed(intake::setUpLowerConveyor);
     }
 
     // Initialize Autonomous scheduler
     private void initAuto() {
         // TODO: Schedule auto path sequences
+    }
+
+    public void updateTelemetry() {
+        this.telemetry.update();
     }
 }
