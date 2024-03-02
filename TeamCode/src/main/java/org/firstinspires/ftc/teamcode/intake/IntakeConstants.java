@@ -5,9 +5,9 @@ import com.acmerobotics.dashboard.config.Config;
 @Config
 public class IntakeConstants {
     // Upper conveyor velocity constants
-    public static double kP_UPPER = 1.0;
-    public static double kI_UPPER = 0.0;
-    public static double kD_UPPER = 0.0;
+    public static double kP_UPPER = 0.012;
+    public static double kI_UPPER = 0.0144;
+    public static double kD_UPPER = 0.003;
     public static double kS_UPPER = 0;
     public static double kV_UPPER = 1;
     public static double kA_UPPER = 0;
