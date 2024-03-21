@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.chassis;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -14,6 +15,8 @@ public class Chassis extends SubsystemBase {
     HardwareMap hardwareMap;
     Telemetry telemetry;
     SampleMecanumDrive chassis;
+    boolean isFieldCentric = true;
+
     public Chassis(HardwareMap hardwareMap, Telemetry telemetry) {
         this.hardwareMap = hardwareMap;
         this.telemetry = telemetry;
@@ -36,8 +39,31 @@ public class Chassis extends SubsystemBase {
         chassis.update();
     }
 
-    public void drive() {
-        // TODO: Add driving code
+    public void drive(double x, double y, double rot) {
+        Pose2d poseEstimate = getPoseEstimate();
+
+        Vector2d input = new Vector2d(-y, -x).rotated(isFieldCentric? -poseEstimate.getHeading() : 0);
+
+        chassis.setWeightedDrivePower(
+                new Pose2d(
+                        input.getX(),
+                        input.getY(),
+                        -rot
+                )
+        );
+    }
+
+    public void resetHeading() {
+        Pose2d poseEstimate = getPoseEstimate();
+        chassis.setPoseEstimate(new Pose2d(
+                poseEstimate.getX(),
+                poseEstimate.getY(),
+                0
+        ));
+    }
+
+    public void toggleFieldCentric() {
+        isFieldCentric = !isFieldCentric;
     }
 
     public void followTrajectory(Trajectory trajectory) {

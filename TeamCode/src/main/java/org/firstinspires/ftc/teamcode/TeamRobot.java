@@ -4,6 +4,7 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.arcrobotics.ftclib.command.Robot;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
+import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -19,9 +20,6 @@ public class TeamRobot extends Robot {
 
     // Subsystems
     Chassis chassis;
-
-    // Commands
-    TeleOpDriveCommand driveCommand;
 
     // OpMode type enumerator
     // TODO: Add more autos as needed
@@ -63,8 +61,17 @@ public class TeamRobot extends Robot {
     private void initTele() {
         // TODO: Add default commands, button bindings, and triggers
         chassis.setDefaultCommand(
-                new TeleOpDriveCommand(chassis)
+                new TeleOpDriveCommand(
+                        chassis,
+                        () -> driveController.getLeftX(),
+                        () -> driveController.getLeftY(),
+                        () -> driveController.getRightX()
+                )
         );
+        driveController.getGamepadButton(GamepadKeys.Button.A)
+                .whenPressed(chassis::resetHeading);
+        driveController.getGamepadButton(GamepadKeys.Button.B)
+                .whenPressed(chassis::toggleFieldCentric);
     }
 
     // Initialize Autonomous scheduler
