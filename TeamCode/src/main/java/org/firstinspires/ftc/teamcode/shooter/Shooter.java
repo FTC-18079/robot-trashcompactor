@@ -17,6 +17,7 @@ public class Shooter extends SubsystemBase {
 
     private final MotorEx shooter;
     private final Servo flick;
+    private boolean isShootingMode = false;
 
     public Shooter(HardwareMap hardwareMap, Telemetry telemetry) {
         this.hardwareMap = hardwareMap;
@@ -44,7 +45,7 @@ public class Shooter extends SubsystemBase {
         flick.setPosition(FLICK_REST_ANGLE);
     }
 
-    public void shoot() {
+    public void enable() {
         shooter.setVelocity(toTicksPerSec(SHOOTER_RPM));
     }
 
@@ -54,11 +55,23 @@ public class Shooter extends SubsystemBase {
 
     public boolean reachedTargetVel() {
         telemetry.addData("Shooter Velocity", getShooterVelocity());
-        telemetry.update();
-        return Math.abs(SHOOTER_RPM - getShooterVelocity()) < SHOOTER_VELOCITY_TOLERANCE;
+        return Math.abs(SHOOTER_RPM - getShooterVelocity()) <= SHOOTER_VELOCITY_TOLERANCE;
     }
 
     public double getShooterVelocity() {
         return shooter.getCorrectedVelocity();
+    }
+
+    public void toggleShootingMode() {
+        isShootingMode = !isShootingMode;
+    }
+
+    public boolean isShootingMode() {
+        return isShootingMode;
+    }
+
+    @Override
+    public void periodic() {
+        telemetry.addData("Shooter Velocity", getShooterVelocity());
     }
 }
