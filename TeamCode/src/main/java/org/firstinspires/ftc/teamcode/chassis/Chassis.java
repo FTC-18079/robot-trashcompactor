@@ -42,7 +42,7 @@ public class Chassis extends SubsystemBase {
     public void drive(double x, double y, double rot) {
         Pose2d poseEstimate = getPoseEstimate();
 
-        Vector2d input = new Vector2d(-y, -x).rotated(isFieldCentric? -poseEstimate.getHeading() : 0);
+        Vector2d input = new Vector2d(y, -x).rotated(isFieldCentric? -poseEstimate.getHeading() : 0);
 
         chassis.setWeightedDrivePower(
                 new Pose2d(
@@ -84,5 +84,12 @@ public class Chassis extends SubsystemBase {
 
     public boolean isBusy() {
         return chassis.isBusy();
+    }
+
+    @Override
+    public void periodic() {
+        telemetry.addData("Robot Pose X", getPoseEstimate().getX());
+        telemetry.addData("Robot Pose Y", getPoseEstimate().getY());
+        telemetry.addData("Robot Pose Heading", getPoseEstimate().getHeading());
     }
 }
