@@ -19,7 +19,8 @@ public class TeleOpMode extends LinearOpMode {
                 hardwareMap,
                 telemetry,
                 gamepad1,
-                gamepad2
+                gamepad2,
+                initialPose
         );
 
         waitForStart();
@@ -27,6 +28,7 @@ public class TeleOpMode extends LinearOpMode {
         // Run until end or stopped
         while (opModeIsActive() || !isStopRequested()) {
             robot.run();
+            robot.updateTelemetry();
         }
 
         // Reset currentPose in case opmode stops early
