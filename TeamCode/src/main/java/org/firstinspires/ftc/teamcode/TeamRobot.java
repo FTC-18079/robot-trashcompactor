@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.Robot;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
@@ -87,24 +86,21 @@ public class TeamRobot extends Robot {
         manipController.getGamepadButton(GamepadKeys.Button.A)
                 .whenPressed(new ShootCommand(shooter));
 
-        // Intake: Manip left & right bumpers
+        // Intake: Manip left bumper (change to right trigger in conjunction with shoot)
         manipController.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
                 .whenPressed(intake::in)
                 .whenReleased(intake::stop);
-        manipController.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
+
+        // Eject: Manip right d-pad
+        manipController.getGamepadButton(GamepadKeys.Button.DPAD_RIGHT)
                 .whenPressed(intake::out)
                 .whenReleased(intake::stop);
 
-        // Deploy: Manip up & down dpad
-        manipController.getGamepadButton(GamepadKeys.Button.DPAD_UP)
-                .whenPressed(intake::retract);
-        manipController.getGamepadButton(GamepadKeys.Button.DPAD_DOWN)
-                .whenPressed(intake::deploy);
-
         // Temp Debug:
         manipController.getGamepadButton(GamepadKeys.Button.Y)
-                .whenPressed(intake::setupUpperConveyor)
-                .whenPressed(intake::setUpLowerConveyor);
+                .whenPressed(intake::configConveyor)
+                .whenPressed(intake::configIntake);
+
     }
 
     // Initialize Autonomous scheduler
