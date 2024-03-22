@@ -13,14 +13,16 @@ public class ShootCommand extends SequentialCommandGroup {
     public ShootCommand(Shooter shooter) {
         this.shooter = shooter;
 
-        addCommands(
-                new InstantCommand(shooter::enable),
-                new WaitUntilCommand(shooter::reachedTargetVel),
-                new InstantCommand(shooter::fire),
-                new WaitCommand(300),
-                new InstantCommand(shooter::stop),
-                new InstantCommand(shooter::rest)
-        );
+        if(shooter.isShootingMode()) {
+            addCommands(
+                    new InstantCommand(shooter::enable),
+                    new WaitUntilCommand(shooter::reachedTargetVel),
+                    new InstantCommand(shooter::fire),
+                    new WaitCommand(1500),
+                    new InstantCommand(shooter::stop),
+                    new InstantCommand(shooter::rest)
+            );
+        } else end(true);
         addRequirements(shooter);
     }
 }

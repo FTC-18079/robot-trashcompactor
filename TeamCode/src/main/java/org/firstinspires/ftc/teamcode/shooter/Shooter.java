@@ -31,6 +31,7 @@ public class Shooter extends SubsystemBase {
 
     public void setupShooter() {
         shooter.stopAndResetEncoder();
+        shooter.setInverted(true);
         shooter.setVeloCoefficients(kP, kI, kD);
         shooter.setFeedforwardCoefficients(kS, kV, kA);
         shooter.setRunMode(Motor.RunMode.VelocityControl);
@@ -54,8 +55,7 @@ public class Shooter extends SubsystemBase {
     }
 
     public boolean reachedTargetVel() {
-        telemetry.addData("Shooter Velocity", getShooterVelocity());
-        return Math.abs(SHOOTER_RPM - getShooterVelocity()) <= SHOOTER_VELOCITY_TOLERANCE;
+        return Math.abs(SHOOTER_RPM - toRPM(getShooterVelocity())) <= SHOOTER_VELOCITY_TOLERANCE;
     }
 
     public double getShooterVelocity() {
@@ -72,6 +72,8 @@ public class Shooter extends SubsystemBase {
 
     @Override
     public void periodic() {
-        telemetry.addData("Shooter Velocity", getShooterVelocity());
+        telemetry.addData("Shooter Velocity", toRPM(getShooterVelocity()));
+        telemetry.addData("Shooter target RPM", SHOOTER_RPM);
+        telemetry.addData("Shooting Mode?", isShootingMode);
     }
 }

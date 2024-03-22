@@ -14,11 +14,15 @@ public class ShooterConstants {
     public static int FLICK_REST_ANGLE = 0;
 
     // Shooter velocity
-    public static double SHOOTER_RPM = 40.0;
+    public static double SHOOTER_RPM = 60.0;
     public static double SHOOTER_VELOCITY_TOLERANCE = 0.5;
-    public static final int SHOOTER_TICKS = 28;
+    public static final int SHOOTER_TICKS = 560;
 
     public static double toTicksPerSec(double rpm) {
         return (rpm / 60) * (double) SHOOTER_TICKS;
+    }
+
+    public static double toRPM(double tps) {
+        return (tps / (double) SHOOTER_TICKS) * 60.0;
     }
 }
