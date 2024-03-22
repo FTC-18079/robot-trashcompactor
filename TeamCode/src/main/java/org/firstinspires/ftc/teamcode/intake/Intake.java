@@ -32,14 +32,14 @@ public class Intake extends SubsystemBase {
 
     public void configConveyor() {
         conveyor.stopAndResetEncoder();
-        conveyor.setInverted(false);
+        conveyor.setInverted(true);
         conveyor.setVeloCoefficients(kP_CONVEYOR, kI_CONVEYOR, kD_CONVEYOR);
         conveyor.setFeedforwardCoefficients(kS_CONVEYOR, kV_CONVEYOR, kA_CONVEYOR);
         conveyor.setRunMode(Motor.RunMode.VelocityControl);
         conveyor.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
 
         conveyorFollower.stopAndResetEncoder();
-        conveyorFollower.setInverted(true);
+        conveyorFollower.setInverted(false);
         conveyorFollower.setVeloCoefficients(kP_CONVEYOR, kI_CONVEYOR, kD_CONVEYOR);
         conveyorFollower.setFeedforwardCoefficients(kS_CONVEYOR, kV_CONVEYOR, kA_CONVEYOR);
         conveyorFollower.setRunMode(Motor.RunMode.VelocityControl);
@@ -75,8 +75,8 @@ public class Intake extends SubsystemBase {
 
     @Override
     public void periodic() {
-        telemetry.addData("Left Conveyor Velocity", conveyor.getCorrectedVelocity());
-        telemetry.addData("Right Conveyor Velocity", conveyorFollower.getCorrectedVelocity());
-        telemetry.addData("Intake Velocity", toTicksPerSec(intake.getCorrectedVelocity()));
+        telemetry.addData("Left Conveyor Velocity", toRPM(conveyor.getCorrectedVelocity()));
+        telemetry.addData("Right Conveyor Velocity", toRPM(conveyorFollower.getCorrectedVelocity()));
+        telemetry.addData("Intake Velocity", toRPM(intake.getCorrectedVelocity()));
     }
 }
