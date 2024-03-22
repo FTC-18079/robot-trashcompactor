@@ -70,8 +70,17 @@ public class TeamRobot extends Robot {
     private void initTele() {
         // Chassis: Driver left & right joysticks
         chassis.setDefaultCommand(
-                new TeleOpDriveCommand(chassis)
+                new TeleOpDriveCommand(
+                        chassis,
+                        () -> driveController.getLeftX(),
+                        () -> driveController.getLeftY(),
+                        () -> driveController.getRightX()
+                )
         );
+        driveController.getGamepadButton(GamepadKeys.Button.A)
+                .whenPressed(chassis::resetHeading);
+        driveController.getGamepadButton(GamepadKeys.Button.B)
+                .whenPressed(chassis::toggleFieldCentric);
 
         // Shoot: Manip A button
         manipController.getGamepadButton(GamepadKeys.Button.A)
