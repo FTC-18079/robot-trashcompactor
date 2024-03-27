@@ -49,7 +49,7 @@ public class Intake extends SubsystemBase {
     public void configIntake() {
         intake.stopAndResetEncoder();
         intake.setInverted(true);
-        intake.setVeloCoefficients(kP_INTAKE, kP_INTAKE, kD_INTAKE);
+        intake.setVeloCoefficients(kP_INTAKE, kI_INTAKE, kD_INTAKE);
         intake.setFeedforwardCoefficients(kS_INTAKE, kV_INTAKE, kA_INTAKE);
         intake.setRunMode(Motor.RunMode.VelocityControl);
         intake.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
@@ -77,6 +77,7 @@ public class Intake extends SubsystemBase {
     public void periodic() {
         telemetry.addData("Left Conveyor Velocity", toRPM(conveyor.getCorrectedVelocity()));
         telemetry.addData("Right Conveyor Velocity", toRPM(conveyorFollower.getCorrectedVelocity()));
+        telemetry.addData("Target Conveyor RPM", CONVEYOR_RPM);
         telemetry.addData("Intake Velocity", toRPM(intake.getCorrectedVelocity()));
     }
 }
