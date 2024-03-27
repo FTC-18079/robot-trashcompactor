@@ -31,7 +31,7 @@ public class Shooter extends SubsystemBase {
 
     public void setupShooter() {
         shooter.stopAndResetEncoder();
-        shooter.setInverted(true);
+        shooter.setInverted(false);
         shooter.setVeloCoefficients(kP, kI, kD);
         shooter.setFeedforwardCoefficients(kS, kV, kA);
         shooter.setRunMode(Motor.RunMode.VelocityControl);
