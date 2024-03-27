@@ -14,10 +14,10 @@ public class ShootCommand extends SequentialCommandGroup {
         this.shooter = shooter;
 
         addCommands(
-                new InstantCommand(shooter::shoot),
+                new InstantCommand(shooter::enable),
                 new WaitUntilCommand(shooter::reachedTargetVel),
                 new InstantCommand(shooter::fire),
-                new WaitCommand(1000),
+                new WaitCommand(1200),
                 new InstantCommand(shooter::stop),
                 new InstantCommand(shooter::rest)
         );

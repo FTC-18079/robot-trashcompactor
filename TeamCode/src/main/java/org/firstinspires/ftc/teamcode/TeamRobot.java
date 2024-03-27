@@ -3,7 +3,9 @@ package org.firstinspires.ftc.teamcode;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.Robot;
+import com.arcrobotics.ftclib.command.button.Trigger;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.hardware.Gamepad;
@@ -82,9 +84,20 @@ public class TeamRobot extends Robot {
         driveController.getGamepadButton(GamepadKeys.Button.B)
                 .whenPressed(chassis::toggleFieldCentric);
 
-        // Shoot: Manip A button
-        manipController.getGamepadButton(GamepadKeys.Button.A)
-                .whenPressed(new ShootCommand(shooter));
+
+
+        // Shoot: Manip right trigger
+        new Trigger(() -> manipController.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.2)
+                .whenActive(new ShootCommand(shooter));
+
+        // Toggle shooting: Manip right bumper
+        manipController.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
+                .whenPressed(shooter::toggleShootingMode);
+
+        // Intake: Manip left trigger
+        new Trigger(() -> manipController.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.2)
+                .whenActive(intake::in)
+                .whenInactive(intake::stop);
 
         // Intake: Manip left bumper (change to right trigger in conjunction with shoot)
         manipController.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
