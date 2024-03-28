@@ -5,10 +5,10 @@ import com.acmerobotics.dashboard.config.Config;
 @Config
 public class IntakeConstants {
     // Conveyor velocity constants
-    public static double kP_CONVEYOR = 1.0;
+    public static double kP_CONVEYOR = 0.015;
     public static double kI_CONVEYOR = 0.0;
-    public static double kD_CONVEYOR = 0.0;
-    public static double kS_CONVEYOR = 0.0;
+    public static double kD_CONVEYOR = 0.01;
+    public static double kS_CONVEYOR = 0.01;
     public static double kV_CONVEYOR = 1.0;
     public static double kA_CONVEYOR = 0.0;
 
@@ -22,7 +22,7 @@ public class IntakeConstants {
 
     // Intake constants
     public static int INTAKE_RPM = 120;
-    public static double CONVEYOR_RPM = 90.0;
+    public static double CONVEYOR_RPM = 290.0;
     public static final int MOTOR_TICKS = 560;
 
     public static double toTicksPerSec(double   rpm) {
