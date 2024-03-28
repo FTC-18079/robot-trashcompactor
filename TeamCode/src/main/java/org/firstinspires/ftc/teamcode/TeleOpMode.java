@@ -19,7 +19,7 @@ public class TeleOpMode extends LinearOpMode {
                 hardwareMap,
                 telemetry,
                 gamepad1,
-                gamepad2,
+                gamepad1,
                 initialPose
         );
 

@@ -15,15 +15,12 @@ public class Chassis extends SubsystemBase {
     HardwareMap hardwareMap;
     Telemetry telemetry;
     SampleMecanumDrive chassis;
-    boolean isFieldCentric = true;
+    boolean isFieldCentric = false; // temporarily robot centric default
 
     public Chassis(HardwareMap hardwareMap, Telemetry telemetry) {
         this.hardwareMap = hardwareMap;
         this.telemetry = telemetry;
 
-        // Initialize chassis as a new SampleMecanumDrive
-        // This template assumes we will continue to use mecanum drive, and as such will not implement tank. Change this if needed.
-        // TODO: Tune roadrunner DriveConstants and Localizer
         chassis = new SampleMecanumDrive(hardwareMap);
     }
 

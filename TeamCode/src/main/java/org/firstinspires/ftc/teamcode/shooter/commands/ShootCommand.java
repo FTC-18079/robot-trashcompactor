@@ -6,6 +6,7 @@ import com.arcrobotics.ftclib.command.WaitCommand;
 import com.arcrobotics.ftclib.command.WaitUntilCommand;
 
 import org.firstinspires.ftc.teamcode.shooter.Shooter;
+import org.firstinspires.ftc.teamcode.shooter.ShooterConstants;
 
 public class ShootCommand extends SequentialCommandGroup {
     private final Shooter shooter;
@@ -17,7 +18,7 @@ public class ShootCommand extends SequentialCommandGroup {
                 new InstantCommand(shooter::enable),
                 new WaitUntilCommand(shooter::reachedTargetVel),
                 new InstantCommand(shooter::fire),
-                new WaitCommand(1200),
+                new WaitCommand(ShooterConstants.RETRACT_DELAY),
                 new InstantCommand(shooter::stop),
                 new InstantCommand(shooter::rest)
         );

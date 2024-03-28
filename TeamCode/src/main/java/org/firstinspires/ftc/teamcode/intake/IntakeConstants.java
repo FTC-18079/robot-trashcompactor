@@ -21,7 +21,7 @@ public class IntakeConstants {
     public static double kA_INTAKE = 0.0;
 
     // Intake constants
-    public static int INTAKE_RPM = 120;
+    public static int INTAKE_RPM = 200;
     public static double CONVEYOR_RPM = 290.0;
     public static final int MOTOR_TICKS = 560;
 
