@@ -48,8 +48,8 @@ public class Intake extends SubsystemBase {
 
     public void configIntake() {
         intake.stopAndResetEncoder();
-        intake.setInverted(false);
-        intake.setVeloCoefficients(kP_INTAKE, kP_INTAKE, kD_INTAKE);
+        intake.setInverted(true);
+        intake.setVeloCoefficients(kP_INTAKE, kI_INTAKE, kD_INTAKE);
         intake.setFeedforwardCoefficients(kS_INTAKE, kV_INTAKE, kA_INTAKE);
         intake.setRunMode(Motor.RunMode.VelocityControl);
         intake.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);

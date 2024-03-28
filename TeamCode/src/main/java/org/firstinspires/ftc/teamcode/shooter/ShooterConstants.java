@@ -14,7 +14,8 @@ public class ShooterConstants {
 
     // Flick positions
     public static double FLICK_SHOOT_ANGLE = 1;
-    public static double FLICK_REST_ANGLE = 0.5;
+    public static double FLICK_REST_ANGLE = 0.57;
+    public static int RETRACT_DELAY = 1100; // ms
 
     // Shooter velocity
     public static double SHOOTER_RPM = 240.0;

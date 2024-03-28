@@ -73,7 +73,6 @@ public class Shooter extends SubsystemBase {
     @Override
     public void periodic() {
         telemetry.addData("Shooter Velocity", toRPM(getShooterVelocity()));
-        telemetry.addData("Shooter target RPM", SHOOTER_RPM);
-        telemetry.addData("Shooting Mode?", isShootingMode);
+//        telemetry.addData("Shooting Mode?", isShootingMode);
     }
 }

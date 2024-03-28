@@ -79,41 +79,30 @@ public class TeamRobot extends Robot {
                         () -> driveController.getRightX()
                 )
         );
+        // Reset heading: Driver A
         driveController.getGamepadButton(GamepadKeys.Button.A)
                 .whenPressed(chassis::resetHeading);
+        // Toggle Field Centric: Driver B
         driveController.getGamepadButton(GamepadKeys.Button.B)
                 .whenPressed(chassis::toggleFieldCentric);
-
-
 
         // Shoot: Manip right trigger
         new Trigger(() -> manipController.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.2)
                 .whenActive(new ShootCommand(shooter));
 
-        // Toggle shooting: Manip right bumper
-        manipController.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
-                .whenPressed(shooter::toggleShootingMode);
+//        // Toggle shooting: Manip right bumper
+//        manipController.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
+//                .whenPressed(shooter::toggleShootingMode);
 
         // Intake: Manip left trigger
         new Trigger(() -> manipController.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.2)
                 .whenActive(intake::in)
                 .whenInactive(intake::stop);
 
-        // Intake: Manip left bumper (change to right trigger in conjunction with shoot)
+        // Eject: Manip left bumper
         manipController.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
-                .whenPressed(intake::in)
-                .whenReleased(intake::stop);
-
-        // Eject: Manip right d-pad
-        manipController.getGamepadButton(GamepadKeys.Button.DPAD_RIGHT)
                 .whenPressed(intake::out)
                 .whenReleased(intake::stop);
-
-        // Temp Debug:
-        manipController.getGamepadButton(GamepadKeys.Button.Y)
-                .whenPressed(intake::configConveyor)
-                .whenPressed(intake::configIntake);
-
     }
 
     // Initialize Autonomous scheduler
