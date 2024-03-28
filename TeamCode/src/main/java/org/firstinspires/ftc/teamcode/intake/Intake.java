@@ -77,7 +77,6 @@ public class Intake extends SubsystemBase {
     public void periodic() {
         telemetry.addData("Left Conveyor Velocity", toRPM(conveyor.getCorrectedVelocity()));
         telemetry.addData("Right Conveyor Velocity", toRPM(conveyorFollower.getCorrectedVelocity()));
-        telemetry.addData("Target Conveyor RPM", CONVEYOR_RPM);
         telemetry.addData("Intake Velocity", toRPM(intake.getCorrectedVelocity()));
     }
 }
